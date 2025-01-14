@@ -38,15 +38,26 @@ class HomeScreen extends StatelessWidget {
               height: 16,
             ),
             SizedBox(
-              height: 280,
+              height: 360,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  PlantCard(name: '아레카야자', nextWatering: '2021-09-01'),
+                  PlantCard(
+                    name: '몬스테라',
+                    lastWateredDate: '2024.01.12',
+                    nextWatering: 'D-2',
+                  ),
+                  SizedBox(width: 16),
+                  PlantCard(
+                    name: '스투키',
+                    lastWateredDate: '2024.01.10',
+                    nextWatering: 'D-5',
+                  ),
                   const SizedBox(width: 16),
-                  PlantCard(name: '고무나무', nextWatering: '2021-09-01'),
-                  const SizedBox(width: 16),
-                  PlantCard(name: '스투키', nextWatering: '2021-09-01'),
+                  PlantCard(
+                      name: '스투키',
+                      lastWateredDate: '2024.01.10',
+                      nextWatering: 'D-20'),
                 ],
               ),
             ),
