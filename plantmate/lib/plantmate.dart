@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:plantmate/controllers/planmate_controller.dart';
 import 'package:plantmate/screens/group_screen.dart';
 import 'package:plantmate/screens/home_screen.dart';
 import 'package:plantmate/screens/profile_screen.dart';
@@ -25,37 +25,16 @@ class PlantMateApp extends StatefulWidget {
 }
 
 class _PlantMateAppState extends State<PlantMateApp> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      log("index: $index");
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Plantmate',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: DefaultTabController(
-          length: tabs.length,
-          child: Scaffold(
-            bottomNavigationBar: BottomNavigationBar(
-              items: tabs,
-              currentIndex: _selectedIndex,
-              selectedItemColor: Colors.green,
-              onTap: _onItemTapped,
-            ),
-            body: IndexedStack(
-              index: _selectedIndex,
-              children: myTabItems,
-            ),
-          )),
-    );
+    final PlantMateController controller = Get.find();
+    return Obx(() => Scaffold(
+          body: myTabItems[controller.selectedIndex.value],
+          bottomNavigationBar: BottomNavigationBar(
+            items: tabs,
+            currentIndex: controller.selectedIndex.value,
+            onTap: controller.onItemTapped,
+          ),
+        ));
   }
 }

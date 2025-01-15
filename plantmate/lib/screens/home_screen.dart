@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import '../widgets/plant_card.dart';
 import '../widgets/stat_card.dart';

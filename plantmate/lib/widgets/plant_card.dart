@@ -5,12 +5,11 @@ class PlantCard extends StatelessWidget {
   final String lastWateredDate;
   final String nextWatering;
 
-  const PlantCard({
-    required this.name,
-    required this.lastWateredDate,
-    required this.nextWatering,
-    Key? key,
-  }) : super(key: key);
+  const PlantCard(
+      {required this.name,
+      required this.lastWateredDate,
+      required this.nextWatering,
+      super.key});
 
   @override
   Widget build(BuildContext context) {

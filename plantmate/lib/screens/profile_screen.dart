@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:plantmate/controllers/auth_controller.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.find();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plantmate'),
@@ -58,6 +62,7 @@ class ProfileScreen extends StatelessWidget {
               title: const Text('로그아웃'),
               onTap: () {
                 // 로그아웃 처리
+                authController.logout();
               },
             ),
             const Divider(),
