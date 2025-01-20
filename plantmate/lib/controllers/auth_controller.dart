@@ -8,6 +8,7 @@ class AuthController extends GetxController {
   var user = Rxn<User>(); // 사용자 정보 관리
   final GetStorage storage = GetStorage();
   final AuthService authService = Get.put(AuthService());
+  User? get currentUser => user.value;
 
   @override
   void onInit() {

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/plantmate_controller.dart';
 import 'plantmate.dart';
+import 'screens/group_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/splash_screen.dart';
 import 'package:get_storage/get_storage.dart';
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => SplashScreen()), // 초기 화면
         GetPage(name: '/login', page: () => LoginScreen()), // 로그인 화면
         GetPage(name: '/home', page: () => PlantMateApp()), // 메인 화면
+        GetPage(name: '/groups', page: () => GroupScreen()),
+        // GetPage(name: '/create-group', page: () => CreateGroupScreen()), // 그룹 생성 화면
       ],
 
       // home: SplashScreen(), // 초기 화면을 SplashScreen으로 설정
