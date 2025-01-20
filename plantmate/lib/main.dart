@@ -11,7 +11,7 @@ import 'package:get_storage/get_storage.dart';
 void main() async {
   await GetStorage.init();
   Get.put(PlantMateController());
-  Get.put(AuthController());
+  Get.put(AuthController()); // AuthController 초기화
   runApp(const MyApp());
 }
 

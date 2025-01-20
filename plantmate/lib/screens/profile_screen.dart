@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:plantmate/controllers/auth_controller.dart';
 
+import '../models/user_model.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final AuthController authController = Get.find();
+  final GetStorage storage = GetStorage();
+
+  ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AuthController authController = Get.find();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plantmate'),
       ),
-      body: Obx(() {
-        // 사용자 정보 가져오기
-        final user = authController.user.value;
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Obx(() {
+          final user = authController.user.value;
+          if (user == null) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-        if (user == null) {
-          // 사용자 정보가 없을 경우 로딩 상태 또는 기본 화면 표시
-          return const Center(child: Text('사용자 정보를 불러오는 중입니다...'));
-        }
-
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 사용자 프로필 섹션
@@ -91,9 +91,9 @@ class ProfileScreen extends StatelessWidget {
               ),
               const Divider(),
             ],
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }
