@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'controllers/auth_controller.dart';
-import 'controllers/planmate_controller.dart';
+import 'controllers/plantmate_controller.dart';
 import 'plantmate.dart';
 import 'screens/login/login_screen.dart';
 import 'screens/splash_screen.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   Get.put(PlantMateController());
   Get.put(AuthController());
   runApp(const MyApp());

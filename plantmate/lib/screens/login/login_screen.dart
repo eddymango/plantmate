@@ -38,7 +38,8 @@ class LoginScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // 로그인 처리 - 임시로 로그인되게 만들었음음
-                authController.login();
+                authController.login(
+                    emailController.text, passwordController.text);
                 Get.offAll(() => const PlantMateApp()); // 메인 화면으로 이동
               },
               child: const Text('로그인'),

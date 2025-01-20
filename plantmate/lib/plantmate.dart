@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:plantmate/controllers/planmate_controller.dart';
+import 'package:plantmate/controllers/plantmate_controller.dart';
 import 'package:plantmate/screens/group_screen.dart';
 import 'package:plantmate/screens/home_screen.dart';
 import 'package:plantmate/screens/profile_screen.dart';
