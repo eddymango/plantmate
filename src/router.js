@@ -7,6 +7,10 @@ const router = express.Router();
 
 const multer = require("multer");
 const upload = multer({ dest: "storage/" });
+const cors = require("cors");
+const app = express();
+
+app.use(cors()); // 모든 도메인에서의 요청을 허용
 
 const webContoller = require("./web/controller");
 const apiUserController = require("./api/user/controller");
@@ -27,10 +31,10 @@ router.post("/file", upload.single("file"), (req, res) => {
 router.post("/user/register", apiUserController.register); //회원가입
 router.post("/user/login", apiUserController.login); //로그인
 
-router.use(authenticateToken); //토큰 검증
+// router.use(authenticateToken); //토큰 검증
 
 router.put("/user/profile", apiUserController.update); //회원정보 수정
-router.delete("/user/profile", apiUserController.delete); //회원탈퇴
+router.delete("/user/profile/:id", apiUserController.delete); //회원탈퇴
 
 //그룹
 
