@@ -33,15 +33,12 @@ router.put("/user/profile", apiUserController.update); //회원정보 수정
 router.delete("/user/profile", apiUserController.delete); //회원탈퇴
 
 //그룹
-
-//가입한 그룹 조회
-router.get("/group", apiGroupController.show);
-//새로운 그룹 생성
-router.post("/group", apiGroupController.register);
-//그룹 가입
-router.post("/group/join", apiGroupController.join);
-//그룹 탈퇴
-router.delete("/group/leave", apiGroupController.leave);
+router.post("/groups", authenticateToken, apiGroupController.createGroup); //그룹 생성
+router.get("/groups", authenticateToken, apiGroupController.getAllGroups); //전체 그룹 조회
+router.get("/groups/:groupId", authenticateToken, apiGroupController.getGroupById); //특정 그룹 조회
+router.post("/groups/join", apiGroupController.joinGroup); //그룹 가입
+router.delete("/groups/leave", apiGroupController.leaveGroup); //그룹 탈퇴
+router.delete("/groups", apiGroupController.deleteGroup); //그룹 삭제
 
 //식물
 

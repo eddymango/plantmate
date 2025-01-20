@@ -51,13 +51,13 @@ exports.update = async (id, name, password) => {
         return { affectedRows: 0 };
     }
 
-    const [result] = await pool.query(query, params);
+    const result = await pool.query(query, params);
     return result;
 };
 
 //회원탈퇴
 exports.delete = async (id) => {
     const query = `DELETE FROM users WHERE id = ?`;
-    const [result] = await pool.query(query, [id]);
+    const result = await pool.query(query, [id]);
     return result;
 };
