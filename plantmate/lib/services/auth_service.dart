@@ -1,11 +1,8 @@
-import 'dart:isolate';
-
 import 'package:get/get.dart';
-import '../models/user_model.dart';
 
 class AuthService extends GetConnect {
   //api baseurl 수정필요
-  final String baseUrl = 'http://localhost:3000/';
+  final String baseUrl = 'http://localhost:3000';
   var isLoggined = false.obs;
 
   @override
@@ -29,6 +26,19 @@ class AuthService extends GetConnect {
       '/user/register',
       {'name': name, 'email': email, 'password': password},
     );
+  }
+
+  Future<Response> updateProfile(Map<String, dynamic> data) async {
+    final response = await put(
+      '/user/profile', // 실제 API 엔드포인트로 변경
+      data,
+    );
+    return response;
+  }
+
+  Future<Response> deleteUser() async {
+    final response = await delete('/user/delete'); // 실제 API 엔드포인트로 변경
+    return response;
   }
 }
 

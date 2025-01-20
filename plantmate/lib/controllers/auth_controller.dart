@@ -3,8 +3,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:plantmate/models/user_model.dart';
 import 'package:plantmate/services/auth_service.dart';
 
-import 'plantmate_controller.dart';
-
 class AuthController extends GetxController {
   var isLoggedIn = false.obs; //로그인 상태 관리
   var user = Rxn<User>(); // 사용자 정보 관리
@@ -58,6 +56,48 @@ class AuthController extends GetxController {
         Get.offAllNamed('/login'); // 로그인 화면으로 이동
       } else {
         Get.snackbar('Error', response.body['message'] ?? '회원가입 실패');
+      }
+    } catch (e) {
+      Get.snackbar('Error', '서버 오류: $e');
+    }
+  }
+
+  Future<bool> updateProfile(
+      {required String name, required String email}) async {
+    final response = await authService.updateProfile(
+      {
+        'name': name,
+        'email': email,
+      },
+    );
+
+    if (response.body['success'] == true) {
+      // 로컬 사용자 정보 업데이트
+      user.value = User(
+        id: user.value!.id,
+        name: name,
+        email: email,
+        profileImage: user.value!.profileImage,
+      );
+      storage.write('user', user.value!.toJson());
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //회원 탈퇴
+  Future<void> deleteUser() async {
+    try {
+      final response = await authService.deleteUser();
+      if (response.statusCode == 200 && response.body['success'] == true) {
+        // 로컬 사용자 정보 삭제
+        storage.remove('user');
+        user.value = null;
+        Get.snackbar('Success', '회원 탈퇴가 완료되었습니다.');
+        Get.offAllNamed('/login'); // 로그인 화면으로 이동
+      } else {
+        Get.snackbar('Error', response.body['message'] ?? '회원 탈퇴 실패');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');

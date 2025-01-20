@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:plantmate/controllers/auth_controller.dart';
 
+import 'edit_profile_screen.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -66,6 +68,7 @@ class ProfileScreen extends StatelessWidget {
                 title: const Text('내 정보 수정'),
                 onTap: () {
                   // 내 정보 수정 화면으로 이동
+                  Get.to(() => EditProfileScreen());
                 },
               ),
               const Divider(),
@@ -83,6 +86,7 @@ class ProfileScreen extends StatelessWidget {
                 title: const Text('회원 탈퇴'),
                 onTap: () {
                   // 회원 탈퇴 처리
+                  authController.deleteUser();
                 },
               ),
               const Divider(),
