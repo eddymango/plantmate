@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:plantmate/services/group_service.dart';
 import 'package:plantmate/controllers/auth_controller.dart';
 
+import 'plant_controller.dart';
+
 class GroupController extends GetxController {
   // 그룹 데이터 (Observable)
   var myGroups = <Map<String, dynamic>>[].obs; // 사용자가 가입한 그룹
@@ -45,6 +47,11 @@ class GroupController extends GetxController {
             groups.where((group) => group['isJoined'] == true).toList();
         recommendedGroups.value =
             groups.where((group) => group['isJoined'] == false).toList();
+
+        if (myGroups.isNotEmpty) {
+          selectedGroup.value = myGroups[0]['name'];
+          Get.find<PlantController>().fetchPlantsForGroup(myGroups[0]['id']);
+        }
 
         filteredRecommendedGroups.value = recommendedGroups; // 초기화
       } else {

@@ -45,4 +45,9 @@ class GroupService extends GetConnect {
     return await delete('/groups',
         query: {'groupId': groupId.toString(), 'userId': userId.toString()});
   }
+
+  //그룹 식물 목록 조회
+  Future<Response> getPlantsForGroup(int groupId) async {
+    return await get('/groups/$groupId/plants');
+  }
 }
