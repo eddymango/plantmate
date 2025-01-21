@@ -4,7 +4,7 @@ import '../controllers/plant_controller.dart';
 import '../models/plant_model.dart';
 import '../screens/plant_detail_screen.dart';
 
-class PlantCard extends StatelessWidget {
+class PlantCard extends StatefulWidget {
   final Plant plant;
 
   PlantCard({
@@ -13,10 +13,15 @@ class PlantCard extends StatelessWidget {
   });
 
   @override
+  State<PlantCard> createState() => _PlantCardState();
+}
+
+class _PlantCardState extends State<PlantCard> {
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => PlantDetailScreen(plant: plant));
+        Get.to(() => PlantDetailScreen(plant: widget.plant));
       },
       child: Container(
         width: 240,
@@ -48,14 +53,14 @@ class PlantCard extends StatelessWidget {
 
             // 식물 이름
             Text(
-              plant.name,
+              widget.plant.name,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
 
             // 마지막 물준 날짜
             Text(
-              '마지막 물준 날: ${plant.lastWateredAt}',
+              '마지막 물준 날: ${widget.plant.lastWateredAt}',
               style: const TextStyle(fontSize: 14, color: Colors.grey),
             ),
             const SizedBox(height: 8),
@@ -75,7 +80,7 @@ class PlantCard extends StatelessWidget {
                     style: TextStyle(fontSize: 14),
                   ),
                   Text(
-                    "D-${plant.wateringInterval}",
+                    "D-${widget.plant.wateringInterval}",
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -93,7 +98,7 @@ class PlantCard extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Get.find<PlantController>()
-                      .waterPlant(plant.id, plant.groupId);
+                      .waterPlant(widget.plant.id, widget.plant.groupId);
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
