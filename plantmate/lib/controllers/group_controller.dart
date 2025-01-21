@@ -117,4 +117,24 @@ class GroupController extends GetxController {
       Get.snackbar('Error', '서버 오류: $e');
     }
   }
+
+  void deleteGroup(int groupId) async {
+    try {
+      final userId = authController.currentUser?.id;
+      if (userId == null) {
+        Get.snackbar('Error', '로그인 정보가 없습니다.');
+        return;
+      }
+
+      final response = await groupService.deleteGroup(groupId, userId);
+      if (response.statusCode == 200 && response.body['result'] == 'ok') {
+        Get.snackbar('Success', '그룹이 삭제되었습니다.');
+        fetchGroups(); // 데이터 새로고침
+      } else {
+        Get.snackbar('Error', response.body['message'] ?? '그룹 삭제 실패');
+      }
+    } catch (e) {
+      Get.snackbar('Error', '서버 오류: $e');
+    }
+  }
 }

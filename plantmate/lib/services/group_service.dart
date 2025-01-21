@@ -40,4 +40,9 @@ class GroupService extends GetConnect {
       'userId': userId,
     });
   }
+
+  Future<Response> deleteGroup(int groupId, int userId) async {
+    return await delete('/groups',
+        query: {'groupId': groupId.toString(), 'userId': userId.toString()});
+  }
 }

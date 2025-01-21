@@ -44,14 +44,19 @@ class _GroupScreenState extends State<GroupScreen> {
                   itemCount: groupController.myGroups.length,
                   itemBuilder: (context, index) {
                     final group = groupController.myGroups[index];
-                    return GroupCard(
-                      groupName: group['name'],
-                      description: group['description'], // 그룹 설명 전달
-                      status: '참여중',
-                      isJoined: true,
-                      onJoinOrLeave: () {
-                        groupController.leaveGroup(group['id']);
+                    return GestureDetector(
+                      onLongPress: () {
+                        _showDeleteGroupDialog(context, group['id']);
                       },
+                      child: GroupCard(
+                        groupName: group['name'],
+                        description: group['description'], // 그룹 설명 전달
+                        status: '참여중',
+                        isJoined: true,
+                        onJoinOrLeave: () {
+                          groupController.leaveGroup(group['id']);
+                        },
+                      ),
                     );
                   },
                 ),
@@ -87,6 +92,33 @@ class _GroupScreenState extends State<GroupScreen> {
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  void _showDeleteGroupDialog(BuildContext context, int groupId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('그룹 삭제'),
+          content: const Text('이 그룹을 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text('취소'),
+            ),
+            TextButton(
+              onPressed: () {
+                groupController.deleteGroup(groupId);
+                Get.back();
+              },
+              child: const Text('삭제'),
+            ),
+          ],
+        );
+      },
     );
   }
 
