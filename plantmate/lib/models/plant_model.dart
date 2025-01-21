@@ -4,7 +4,7 @@ class Plant {
   final String name; // 식물 이름
   final String description; // 식물 설명 (nullable)
   final int wateringInterval; // 물주기 주기 (일 단위)
-  final String lastWateredAt; // 마지막 물 준 날짜와 시간 (nullable)
+  String lastWateredAt; // 마지막 물 준 날짜와 시간 (nullable)
   final String createdAt; // 식물 생성 날짜와 시간
   final String photoUrl; // 식물 사진 URL (nullable)
 
