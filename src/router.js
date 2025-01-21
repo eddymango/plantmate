@@ -17,6 +17,7 @@ const apiGroupController = require("./api/group/controller");
 const apiPlantController = require("./api/plant/controller");
 const authenticateToken = require("./middleware/authenticate");
 
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'storage/');
@@ -27,6 +28,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+
 
 router.get("/", webContoller.home);
 router.get("/page/:route", webContoller.page);
@@ -57,7 +59,6 @@ router.delete("/groups/leave/:groupId", apiGroupController.leaveGroup); //그룹
 router.delete("/groups", apiGroupController.deleteGroup); //그룹 삭제
 
 //식물
-
 //식물 추가
 router.post("/plants", upload.single("photo_url"), apiPlantController.addPlant);
 //식물 수정
@@ -70,5 +71,6 @@ router.get("/plants/:id", apiPlantController.getPlant);
 router.post("/plants/:id/water", apiPlantController.waterPlant);
 //물주기 주기 계산
 router.get("/plants/:id/watering-schedule", apiPlantController.getWateringSchedule);
+
 
 module.exports = router;

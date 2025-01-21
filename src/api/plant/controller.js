@@ -38,7 +38,6 @@ exports.deletePlant = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await repository.deletePlant(id);
-    console.log("Delete Result:", result);
     if (result.affectedRows > 0) {
       res.status(200).json({ result: "ok", message: "식물이 삭제되었습니다." });
     } else {

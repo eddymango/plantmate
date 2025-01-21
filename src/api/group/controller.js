@@ -3,7 +3,6 @@ const repository = require("./repository");
 // 그룹 생성
 exports.createGroup = async (req, res) => {
   const { userId, name, description, password } = req.body;
-  
   try {
     // 그룹 생성
     const groupId = await repository.createGroup(
