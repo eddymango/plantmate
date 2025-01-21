@@ -46,8 +46,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     final group = groupController.myGroups[index];
                     return GroupCard(
                       groupName: group['name'],
-                      members: group['members'] ?? 0, // null 값을 0으로 대체
-                      plants: group['plants'] ?? 0, // null 값을 0으로 대체
+                      description: group['description'], // 그룹 설명 전달
                       status: '참여중',
                       isJoined: true,
                       onJoinOrLeave: () {
@@ -67,9 +66,9 @@ class _GroupScreenState extends State<GroupScreen> {
                     final group = groupController.recommendedGroups[index];
                     return GroupCard(
                       groupName: group['name'],
-                      members: group['members'] ?? 0, // null 값을 0으로 대체
-                      plants: group['plants'] ?? 0, // null 값을 0으로 대체
                       status: '가입하기',
+                      description: group['description'], // 그룹 설명 전달
+
                       isJoined: false,
                       onJoinOrLeave: () {
                         _showJoinGroupDialog(context, group['id']);
@@ -218,9 +217,9 @@ class GroupSearchDelegate extends SearchDelegate {
         children: [
           ...groupController.myGroups.map((group) => GroupCard(
                 groupName: group['name'],
-                members: group['members'] ?? 0, // null 값을 0으로 대체
-                plants: group['plants'] ?? 0, // null 값을 0으로 대체
                 status: '참여중',
+                description: group['description'], // 그룹 설명 전달
+
                 isJoined: true,
                 onJoinOrLeave: () {
                   groupController.leaveGroup(group['id']);
@@ -228,9 +227,9 @@ class GroupSearchDelegate extends SearchDelegate {
               )),
           ...groupController.recommendedGroups.map((group) => GroupCard(
                 groupName: group['name'],
-                members: group['members'] ?? 0, // null 값을 0으로 대체
-                plants: group['plants'] ?? 0, // null 값을 0으로 대체
                 status: '가입하기',
+                description: group['description'], // 그룹 설명 전달
+
                 isJoined: false,
                 onJoinOrLeave: () {
                   showJoinGroupDialog(context, group['id']);

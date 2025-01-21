@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 
 class GroupCard extends StatelessWidget {
   final String groupName;
-  final int members;
-  final int plants;
   final String status;
+  final String description;
   final bool isJoined;
   final VoidCallback onJoinOrLeave;
 
   const GroupCard({
     super.key,
     required this.groupName,
-    required this.members,
-    required this.plants,
     required this.status,
     required this.isJoined,
     required this.onJoinOrLeave,
+    required this.description,
   });
 
   @override
   Widget build(BuildContext context) {
+    final truncatedDescription = description.length > 15
+        ? '${description.substring(0, 15)}...'
+        : description;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -49,7 +51,7 @@ class GroupCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '멤버 $members명 · 식물 $plants개',
+                  truncatedDescription, // 그룹 설명 표시
                   style: const TextStyle(fontSize: 14, color: Colors.grey),
                 ),
               ],
