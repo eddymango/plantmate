@@ -51,7 +51,6 @@ class _GroupScreenState extends State<GroupScreen> {
                       status: '참여중',
                       isJoined: true,
                       onJoinOrLeave: () {
-                        print('탈퇴 버튼 클릭: 그룹 ID ${group['id']}');
                         groupController.leaveGroup(group['id']);
                       },
                     );
@@ -224,7 +223,6 @@ class GroupSearchDelegate extends SearchDelegate {
                 status: '참여중',
                 isJoined: true,
                 onJoinOrLeave: () {
-                  print('탈퇴 버튼 클릭: 그룹 ID ${group['id']}');
                   groupController.leaveGroup(group['id']);
                 },
               )),
