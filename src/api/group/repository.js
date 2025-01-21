@@ -103,5 +103,7 @@ exports.deleteGroup = async (groupId, userId) => {
 exports.getGroupPlants = async (groupId) => {
   const query = `SELECT * FROM plants WHERE group_id = ?`;
   const rows = await pool.query(query, [groupId]);
+  // console.log("Query Result from DB:", rows); // 쿼리 결과 로그 출력
+
   return rows;
 };

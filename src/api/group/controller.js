@@ -1,4 +1,5 @@
 const repository = require("./repository");
+const moment = require("moment-timezone");
 
 // 그룹 생성
 exports.createGroup = async (req, res) => {
@@ -126,12 +127,26 @@ exports.getGroupPlants = async (req, res) => {
 
   try {
     const plants = await repository.getGroupPlants(groupId);
+    // console.log("Plants to be sent in response:", plants); // 응답으로 보낼 데이터 로그 출력
+
     if (!plants || plants.length === 0) {
       return res
         .status(404)
         .json({ result: "fail", message: "식물을 찾을 수 없습니다." });
     }
-    res.status(200).json({ result: "ok", data: plants });
+    const updatedPlants = plants.map((plant) => ({
+      ...plant,
+      last_watered_at: moment(plant.last_watered_at)
+        .tz("Asia/Seoul")
+        .format("YYYY-MM-DD HH:mm:ss"),
+      created_at: moment(plant.created_at)
+        .tz("Asia/Seoul")
+        .format("YYYY-MM-DD HH:mm:ss"),
+    }));
+
+    console.log("Plants to be sent in response:", updatedPlants); // 응답으로 보낼 데이터 로그 출력
+
+    res.status(200).json({ result: "ok", data: updatedPlants });
   } catch (err) {
     console.error("Error fetching group plants:", err);
     res.status(500).json({ result: "fail", message: "오류가 발생했습니다." });
