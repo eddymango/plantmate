@@ -119,3 +119,21 @@ exports.deleteGroup = async (req, res) => {
       .json({ result: "fail", message: "서버 오류가 발생했습니다." });
   }
 };
+
+//그룹에 속한 식물 조회회
+exports.getGroupPlants = async (req, res) => {
+  const { groupId } = req.params;
+
+  try {
+    const plants = await repository.getGroupPlants(groupId);
+    if (!plants || plants.length === 0) {
+      return res
+        .status(404)
+        .json({ result: "fail", message: "식물을 찾을 수 없습니다." });
+    }
+    res.status(200).json({ result: "ok", data: plants });
+  } catch (err) {
+    console.error("Error fetching group plants:", err);
+    res.status(500).json({ result: "fail", message: "오류가 발생했습니다." });
+  }
+};

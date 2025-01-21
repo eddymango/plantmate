@@ -17,18 +17,16 @@ const apiGroupController = require("./api/group/controller");
 const apiPlantController = require("./api/plant/controller");
 const authenticateToken = require("./middleware/authenticate");
 
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'storage/');
+    cb(null, "storage/");
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-    cb(null, uniqueSuffix + '-' + file.originalname);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + "-" + file.originalname);
   },
 });
 const upload = multer({ storage: storage });
-
 
 router.get("/", webContoller.home);
 router.get("/page/:route", webContoller.page);
@@ -57,12 +55,17 @@ router.get("/groups/:groupId", apiGroupController.getGroupById); //특정 그룹
 router.post("/groups/join", apiGroupController.joinGroup); //그룹 가입
 router.delete("/groups/leave/:groupId", apiGroupController.leaveGroup); //그룹 탈퇴
 router.delete("/groups", apiGroupController.deleteGroup); //그룹 삭제
+router.get("/groups/:groupId/plants", apiGroupController.getGroupPlants); //그룹 식물 조회
 
 //식물
 //식물 추가
 router.post("/plants", upload.single("photo_url"), apiPlantController.addPlant);
 //식물 수정
-router.put("/plants/:id", upload.single("photo_url"), apiPlantController.updatePlant);
+router.put(
+  "/plants/:id",
+  upload.single("photo_url"),
+  apiPlantController.updatePlant
+);
 //식물 삭제
 router.delete("/plants/:id", apiPlantController.deletePlant);
 //식물 조회
@@ -70,7 +73,9 @@ router.get("/plants/:id", apiPlantController.getPlant);
 //식물 물주기
 router.post("/plants/:id/water", apiPlantController.waterPlant);
 //물주기 주기 계산
-router.get("/plants/:id/watering-schedule", apiPlantController.getWateringSchedule);
-
+router.get(
+  "/plants/:id/watering-schedule",
+  apiPlantController.getWateringSchedule
+);
 
 module.exports = router;

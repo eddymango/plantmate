@@ -1,4 +1,5 @@
 const { pool } = require("../../database");
+const groupRepository = require("../group/repository");
 
 //회원가입
 exports.register = async (email, password, name) => {
@@ -56,6 +57,13 @@ exports.update = async (id, name, password) => {
 
 //회원탈퇴
 exports.delete = async (id) => {
+  const groupQuery = `SELECT id FROM group_info WHERE created_by = ?`;
+  const groups = await pool.query(groupQuery, [id]);
+
+  for (const group of groups) {
+    await groupRepository.deleteGroup(group.id, id);
+  }
+
   const query = `DELETE FROM users WHERE id = ?`;
   const result = await pool.query(query, [`${id}`]);
   return result;

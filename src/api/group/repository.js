@@ -72,9 +72,13 @@ exports.leaveGroup = async (groupId, userId) => {
 exports.deleteGroup = async (groupId, userId) => {
   // 그룹 생성자인지 확인
   const query = `SELECT created_by FROM group_info WHERE id = ?`;
-  const [rows] = await pool.query(query, [groupId]);
+  const rows = await pool.query(query, [groupId]);
 
   console.log("Query Result:", rows);
+
+  if (!rows || (Array.isArray(rows) && rows.length === 0)) {
+    return { success: false, message: "그룹을 찾을 수 없습니다." }; // 그룹이 없으면 반환
+  }
 
   // 결과가 배열인지 확인
   const createdBy = Array.isArray(rows) ? rows[0]?.created_by : rows.created_by;
@@ -93,4 +97,11 @@ exports.deleteGroup = async (groupId, userId) => {
   const result = await pool.query(deleteQuery, [groupId]);
 
   return { success: result.affectedRows > 0 };
+};
+
+//rmfnqdp 속한 식물 조회
+exports.getGroupPlants = async (groupId) => {
+  const query = `SELECT * FROM plants WHERE group_id = ?`;
+  const rows = await pool.query(query, [groupId]);
+  return rows;
 };
