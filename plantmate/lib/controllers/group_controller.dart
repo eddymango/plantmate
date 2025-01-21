@@ -7,6 +7,8 @@ class GroupController extends GetxController {
   var myGroups = <Map<String, dynamic>>[].obs; // 사용자가 가입한 그룹
   var recommendedGroups = <Map<String, dynamic>>[].obs; // 추천 그룹
   var filteredRecommendedGroups = <Map<String, dynamic>>[].obs; // 필터링된 추천 그룹
+  var selectedGroup = ''.obs; // 선택된 그룹
+  var plants = <Map<String, dynamic>>[].obs; // 선택된 그룹의 식물 목록
 
   final GroupService groupService = Get.put(GroupService());
   final AuthController authController = Get.find<AuthController>();
@@ -43,6 +45,8 @@ class GroupController extends GetxController {
             groups.where((group) => group['isJoined'] == true).toList();
         recommendedGroups.value =
             groups.where((group) => group['isJoined'] == false).toList();
+
+        filteredRecommendedGroups.value = recommendedGroups; // 초기화
       } else {
         Get.snackbar('Error', '그룹 데이터를 가져오는데 실패했습니다.');
       }

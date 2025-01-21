@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../controllers/group_controller.dart';
 import '../widgets/plant_card.dart';
 import '../widgets/stat_card.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final GroupController groupController = Get.put(GroupController());
+
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,16 +16,24 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Plantmate'),
         actions: [
-          DropdownButton(
-            value: '우리집 화분',
-            onChanged: (value) {
-              print(value);
-            },
-            items: const [
-              DropdownMenuItem(value: '우리집 화분', child: Text("우리집 화분")),
-              DropdownMenuItem(value: '사무실 정원', child: Text("사무실 정원")),
-            ],
-          )
+          Obx(() {
+            return DropdownButton(
+              value: groupController.selectedGroup.value.isNotEmpty
+                  ? groupController.selectedGroup.value
+                  : (groupController.myGroups.isNotEmpty
+                      ? groupController.myGroups[0]['name']
+                      : null),
+              onChanged: (value) {
+                groupController.selectedGroup.value = value.toString();
+              },
+              items: groupController.myGroups.map((group) {
+                return DropdownMenuItem(
+                  value: group['name'],
+                  child: Text(group['name']),
+                );
+              }).toList(),
+            );
+          }),
         ],
       ),
       body: Padding(
