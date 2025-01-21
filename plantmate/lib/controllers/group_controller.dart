@@ -6,6 +6,7 @@ class GroupController extends GetxController {
   // 그룹 데이터 (Observable)
   var myGroups = <Map<String, dynamic>>[].obs; // 사용자가 가입한 그룹
   var recommendedGroups = <Map<String, dynamic>>[].obs; // 추천 그룹
+  var filteredRecommendedGroups = <Map<String, dynamic>>[].obs; // 필터링된 추천 그룹
 
   final GroupService groupService = Get.put(GroupService());
   final AuthController authController = Get.find<AuthController>();
@@ -20,13 +21,9 @@ class GroupController extends GetxController {
   void searchGroup(String query) {
     // 검색 로직 구현 (필터링)
     if (query.isEmpty) {
-      fetchGroups();
+      filteredRecommendedGroups.value = recommendedGroups;
     } else {
-      myGroups.value = myGroups
-          .where((group) =>
-              group['name'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      recommendedGroups.value = recommendedGroups
+      filteredRecommendedGroups.value = recommendedGroups
           .where((group) =>
               group['name'].toLowerCase().contains(query.toLowerCase()))
           .toList();

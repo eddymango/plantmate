@@ -203,6 +203,7 @@ class _GroupScreenState extends State<GroupScreen> {
               onPressed: () {
                 groupController.joinGroup(groupId, passwordController.text);
                 Get.back();
+                Get.back();
               },
               child: const Text('가입'),
             ),
@@ -247,21 +248,10 @@ class GroupSearchDelegate extends SearchDelegate {
     return Obx(() {
       return ListView(
         children: [
-          ...groupController.myGroups.map((group) => GroupCard(
+          ...groupController.filteredRecommendedGroups.map((group) => GroupCard(
                 groupName: group['name'],
-                status: '참여중',
                 description: group['description'], // 그룹 설명 전달
-
-                isJoined: true,
-                onJoinOrLeave: () {
-                  groupController.leaveGroup(group['id']);
-                },
-              )),
-          ...groupController.recommendedGroups.map((group) => GroupCard(
-                groupName: group['name'],
                 status: '가입하기',
-                description: group['description'], // 그룹 설명 전달
-
                 isJoined: false,
                 onJoinOrLeave: () {
                   showJoinGroupDialog(context, group['id']);
