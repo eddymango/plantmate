@@ -38,6 +38,7 @@ class PlantController extends GetxController {
             .toList();
         sortPlantsByWateringDate();
       } else {
+        plants.value = [];
         Get.snackbar('Error', '식물 데이터를 가져오는데 실패했습니다.');
       }
     } catch (e) {

@@ -55,7 +55,7 @@ class GroupController extends GetxController {
 
         filteredRecommendedGroups.value = recommendedGroups; // 초기화
       } else {
-        Get.snackbar('Error', '그룹 데이터를 가져오는데 실패했습니다.');
+        Get.snackbar('Error', '그룹에 속한 식물이 없습니다.');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');

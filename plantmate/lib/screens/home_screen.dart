@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../controllers/group_controller.dart';
 import '../controllers/plant_controller.dart';
@@ -61,49 +62,66 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "식물 목록",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          if (groupController.myGroups.isEmpty) {
+            return Center(
+              child: Text(
+                '가입된 그룹이 없습니다.',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              SizedBox(
-                height: 360,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: plantController.plants.length,
-                  itemBuilder: (context, index) {
-                    final plant = plantController.plants[index];
-                    return PlantCard(
-                      plant: plant,
-                    );
-                  },
+            );
+          } else {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "식물 목록",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: StatCard(
-                      label: '오늘 물 줄 식물',
-                      value: plantController.getTodayWateringCount().toString(),
+                const SizedBox(
+                  height: 16,
+                ),
+                SizedBox(
+                  height: 360,
+                  child: plantController.plants.isEmpty
+                      ? Center(
+                          child: Text(
+                            '이 그룹에 속한 식물이 없습니다.',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: plantController.plants.length,
+                          itemBuilder: (context, index) {
+                            final plant = plantController.plants[index];
+                            return PlantCard(
+                              plant: plant,
+                            );
+                          },
+                        ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: StatCard(
+                        label: '오늘 물 줄 식물',
+                        value:
+                            plantController.getTodayWateringCount().toString(),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: StatCard(
-                      label: '총 식물 수',
-                      value: plantController.getTotalPlantCount().toString(),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: StatCard(
+                        label: '총 식물 수',
+                        value: plantController.getTotalPlantCount().toString(),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          );
+                  ],
+                ),
+              ],
+            );
+          }
         }),
       ),
       floatingActionButton: FloatingActionButton(
@@ -164,7 +182,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   name: nameController.text,
                   description: descriptionController.text,
                   wateringInterval: int.parse(wateringIntervalController.text),
-                  lastWateredAt: '',
+                  lastWateredAt: DateFormat('yyyy-MM-dd HH:mm:ss')
+                      .format(DateTime.now()), // 현재 시간으로 설정
                   createdAt: DateTime.now().toIso8601String(),
                   photoUrl: '',
                 );
