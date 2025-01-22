@@ -53,8 +53,8 @@ exports.addPlant = async (req, res) => {
 }; // 식물 수정
 exports.updatePlant = async (req, res) => {
   const { id } = req.params;
-  const { name, description, watering_interval } = req.body;
-  const photo_url = req.file ? "storage/" + req.file.filename : null;
+  const { name, description, watering_interval, photo_url } = req.body;
+  // const photo_url = req.file ? "storage/" + req.file.filename : null;
 
   try {
     const result = await repository.updatePlant(

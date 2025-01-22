@@ -63,11 +63,7 @@ router.get("/groups/:groupId/plants", apiGroupController.getGroupPlants); //그�
 //식물 추가
 router.post("/plants", upload.single("photo_url"), apiPlantController.addPlant);
 //식물 수정
-router.put(
-  "/plants/:id",
-  upload.single("photo_url"),
-  apiPlantController.updatePlant
-);
+router.put("/plants/:id", apiPlantController.updatePlant);
 //식물 삭제
 router.delete("/plants/:id", apiPlantController.deletePlant);
 //식물 조회
