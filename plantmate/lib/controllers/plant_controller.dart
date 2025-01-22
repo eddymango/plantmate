@@ -20,9 +20,9 @@ class PlantController extends GetxController {
       if (plant.lastWateredAt.isEmpty) return false;
       final lastWateredDate = DateTime.parse(plant.lastWateredAt);
       final nextWateringDate =
-          lastWateredDate.add(Duration(days: plant.wateringInterval));
+          lastWateredDate.add(Duration(days: plant.wateringInterval + 1));
       final daysDifference = nextWateringDate.difference(today).inDays;
-      return daysDifference >= -100 && daysDifference <= 0;
+      return daysDifference <= 0;
     }).length;
   }
 
@@ -104,7 +104,15 @@ class PlantController extends GetxController {
       final response = await plantService.updatePlant(plantId, plantData);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
         Get.snackbar('Success', '식물이 수정되었습니다.', duration: Duration(seconds: 1));
-        fetchPlantsForGroup(updatedPlant.groupId); // 그룹의 식물 목록 다시 가져오기
+
+        final index = plants.indexWhere((plant) => plant.id == plantId);
+        if (index != -1) {
+          plants[index] = updatedPlant;
+          plants.refresh(); // 강제 갱신
+        }
+        sortPlantsByWateringDate();
+        // fetchPlantsForGroup(updatedPlant.groupId);
+        // plants.refresh(); // 그룹의 식물 목록 다시 가져오기
       } else {
         Get.snackbar('Error', response.body['message'] ?? '식물 수정 실패');
       }

@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plantmate'),
+        title: const Text('내정보'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,6 +33,7 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     CircleAvatar(
+                      backgroundColor: Colors.lightGreen[100],
                       radius: 50,
                       backgroundImage: user.profileImage.isNotEmpty
                           ? NetworkImage(user.profileImage)

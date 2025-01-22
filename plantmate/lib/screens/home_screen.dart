@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Padding(
                               padding: const EdgeInsets.only(right: 16.0),
                               child: PlantCard(
-                                key: ValueKey(plant.id), // 고유한 키 설정
+                                key: ValueKey(plant.id), // 고유한 키 설정  오른른
 
                                 plant: plant,
                               ),
@@ -147,6 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
         onPressed: () {
           // 식물 추가 화면으로 이동 또는 다이얼로그 표시
           _showAddPlantDialog(context);

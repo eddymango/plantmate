@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import '../models/plant_model.dart';
 import '../screens/plant_detail_screen.dart';
@@ -19,12 +20,23 @@ class PlantCard extends StatefulWidget {
 
 class _PlantCardState extends State<PlantCard> {
   final PlantController plantController = Get.find<PlantController>();
-  late String dDayText;
+  late RxString dDayText;
 
   @override
   void initState() {
     super.initState();
+    dDayText = "계산 중...".obs;
+
     _calculateDDay();
+  }
+
+  @override
+  void didUpdateWidget(covariant PlantCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // widget.plant 변경 시 D-Day 재계산
+    if (widget.plant != oldWidget.plant) {
+      _calculateDDay();
+    }
   }
 
   void _calculateDDay() {
@@ -45,7 +57,7 @@ class _PlantCardState extends State<PlantCard> {
 
     final dDay = nextWateringDate.difference(today).inDays;
     setState(() {
-      dDayText = dDay > 0
+      dDayText.value = dDay > 0
           ? "D-$dDay"
           : dDay == 0
               ? "D-Day"
@@ -73,7 +85,7 @@ class _PlantCardState extends State<PlantCard> {
         width: 240,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: const Color.fromARGB(255, 209, 238, 175),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -142,7 +154,7 @@ class _PlantCardState extends State<PlantCard> {
                     style: TextStyle(fontSize: 14),
                   ),
                   Text(
-                    dDayText,
+                    dDayText.value,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -166,7 +178,7 @@ class _PlantCardState extends State<PlantCard> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
-                  backgroundColor: Colors.blue,
+                  backgroundColor: const Color.fromARGB(255, 114, 180, 235),
                 ),
                 child: const Text(
                   '물주기',

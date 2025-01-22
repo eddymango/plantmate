@@ -11,7 +11,7 @@ class StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color.fromARGB(255, 209, 238, 175),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -23,7 +23,9 @@ class StatCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(color: Colors.grey)),
+          Text(label,
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Text(
             value,
