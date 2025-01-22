@@ -8,8 +8,10 @@ const router = express.Router();
 const multer = require("multer");
 const cors = require("cors");
 const app = express();
+const path = require("path");
 
 app.use(cors()); // 모든 도메인에서의 요청을 허용
+app.use("/storage", express.static(path.join(__dirname, "storage")));
 
 const webContoller = require("./web/controller");
 const apiUserController = require("./api/user/controller");

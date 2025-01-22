@@ -3,11 +3,29 @@ const moment = require("moment");
 
 // 식물 추가
 exports.addPlant = async (req, res) => {
-  const { name, description, watering_interval, group_id, last_watered_at } =
-    req.body;
-  const photo_url = req.file ? "storage/" + req.file.filename : null;
+  console.log("addPlant 함수 호출됨"); // 함수 호출 로그
+
+  const {
+    name,
+    description,
+    watering_interval,
+    group_id,
+    last_watered_at,
+    photo_url,
+  } = req.body;
+  // const photo_url = req.file ? "storage/" + req.file.filename : null;
 
   try {
+    // 수신된 데이터 로그 출력
+    console.log("Received data:", {
+      name,
+      description,
+      watering_interval,
+      group_id,
+      last_watered_at,
+      photo_url,
+    });
+
     const lastWateredAtDate = moment(
       last_watered_at,
       "YYYY-MM-DD HH:mm:ss",
@@ -24,7 +42,7 @@ exports.addPlant = async (req, res) => {
       description,
       watering_interval,
       group_id,
-      last_watered_at,
+      lastWateredAtDate.format("YYYY-MM-DD HH:mm:ss"),
       photo_url
     );
     res.status(200).json({ result: "ok", data: result });
@@ -32,9 +50,7 @@ exports.addPlant = async (req, res) => {
     console.error("Error in addPlant:", error.message);
     res.status(500).json({ result: "fail", message: "오류가 발생했습니다." });
   }
-};
-
-// 식물 수정
+}; // 식물 수정
 exports.updatePlant = async (req, res) => {
   const { id } = req.params;
   const { name, description, watering_interval } = req.body;
