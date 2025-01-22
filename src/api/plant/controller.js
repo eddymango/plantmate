@@ -1,12 +1,32 @@
 const repository = require("./repository");
+const moment = require("moment");
 
 // 식물 추가
 exports.addPlant = async (req, res) => {
-  const { name, description, watering_interval, group_id } = req.body;
-  const photo_url = req.file ? 'storage/' + req.file.filename : null;
+  const { name, description, watering_interval, group_id, last_watered_at } =
+    req.body;
+  const photo_url = req.file ? "storage/" + req.file.filename : null;
 
   try {
-    const result = await repository.addPlant(name, description, watering_interval, group_id, photo_url);
+    const lastWateredAtDate = moment(
+      last_watered_at,
+      "YYYY-MM-DD HH:mm:ss",
+      true
+    );
+    if (!lastWateredAtDate.isValid()) {
+      return res
+        .status(400)
+        .json({ result: "fail", message: "유효하지 않은 날짜 형식입니다." });
+    }
+
+    const result = await repository.addPlant(
+      name,
+      description,
+      watering_interval,
+      group_id,
+      last_watered_at,
+      photo_url
+    );
     res.status(200).json({ result: "ok", data: result });
   } catch (error) {
     console.error("Error in addPlant:", error.message);
@@ -18,14 +38,22 @@ exports.addPlant = async (req, res) => {
 exports.updatePlant = async (req, res) => {
   const { id } = req.params;
   const { name, description, watering_interval } = req.body;
-  const photo_url = req.file ? 'storage/' + req.file.filename : null;
-  
+  const photo_url = req.file ? "storage/" + req.file.filename : null;
+
   try {
-    const result = await repository.updatePlant(id, name, description, watering_interval, photo_url);
+    const result = await repository.updatePlant(
+      id,
+      name,
+      description,
+      watering_interval,
+      photo_url
+    );
     if (result.affectedRows > 0) {
       res.status(200).json({ result: "ok", data: result });
     } else {
-      res.status(404).json({ result: "fail", message: "식물을 찾을 수 없습니다." });
+      res
+        .status(404)
+        .json({ result: "fail", message: "식물을 찾을 수 없습니다." });
     }
   } catch (error) {
     console.error("Error in updatePlant:", error.message);
@@ -41,7 +69,9 @@ exports.deletePlant = async (req, res) => {
     if (result.affectedRows > 0) {
       res.status(200).json({ result: "ok", message: "식물이 삭제되었습니다." });
     } else {
-      res.status(404).json({ result: "fail", message: "식물을 찾을 수 없습니다." });
+      res
+        .status(404)
+        .json({ result: "fail", message: "식물을 찾을 수 없습니다." });
     }
   } catch (error) {
     console.error("Error in deletePlant:", error.message);
@@ -57,7 +87,9 @@ exports.getPlant = async (req, res) => {
     if (result.length > 0) {
       res.status(200).json({ result: "ok", data: result[0] });
     } else {
-      res.status(404).json({ result: "fail", message: "식물을 찾을 수 없습니다." });
+      res
+        .status(404)
+        .json({ result: "fail", message: "식물을 찾을 수 없습니다." });
     }
   } catch (error) {
     console.error("Error in getPlant:", error.message);
@@ -84,9 +116,16 @@ exports.getWateringSchedule = async (req, res) => {
   try {
     const result = await repository.getWateringSchedule(id);
     if (!result) {
-      return res.status(404).json({ result: "fail", message: "식물을 찾을 수 없습니다." });
+      return res
+        .status(404)
+        .json({ result: "fail", message: "식물을 찾을 수 없습니다." });
     }
-    res.status(200).json({ result: "ok", data: { nextWateringDate: result.nextWateringDate, daysUntilNextWatering: result.daysUntilNextWatering } 
+    res.status(200).json({
+      result: "ok",
+      data: {
+        nextWateringDate: result.nextWateringDate,
+        daysUntilNextWatering: result.daysUntilNextWatering,
+      },
     });
   } catch (error) {
     console.error("Error fetching watering schedule:", error.message);
