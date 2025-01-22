@@ -19,6 +19,8 @@ class PlantDetailScreen extends StatelessWidget {
         TextEditingController(text: plant.wateringInterval.toString());
 
     return Scaffold(
+      resizeToAvoidBottomInset: true, // 키보드가 올라올 때 화면이 깨지지 않도록 설정
+
       appBar: AppBar(
         title: Text(plant.name),
         actions: [
@@ -30,43 +32,48 @@ class PlantDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: '식물 이름'),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: '식물 설명'),
-            ),
-            TextField(
-              controller: wateringIntervalController,
-              decoration: const InputDecoration(labelText: '물주기 주기 (일)'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                final updatedPlant = Plant(
-                  id: plant.id,
-                  groupId: plant.groupId,
-                  name: nameController.text,
-                  description: descriptionController.text,
-                  wateringInterval: int.parse(wateringIntervalController.text),
-                  lastWateredAt: plant.lastWateredAt,
-                  createdAt: plant.createdAt,
-                  photoUrl: plant.photoUrl,
-                );
-                plantController.updatePlant(plant.id, updatedPlant);
-                Get.back();
-              },
-              child: const Text('수정'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(labelText: '식물 이름'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: '식물 설명'),
+              ),
+              TextField(
+                controller: wateringIntervalController,
+                decoration: const InputDecoration(labelText: '물주기 주기 (일)'),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+
+                  final updatedPlant = Plant(
+                    id: plant.id,
+                    groupId: plant.groupId,
+                    name: nameController.text,
+                    description: descriptionController.text,
+                    wateringInterval:
+                        int.parse(wateringIntervalController.text),
+                    lastWateredAt: plant.lastWateredAt,
+                    createdAt: plant.createdAt,
+                    photoUrl: plant.photoUrl,
+                  );
+                  plantController.updatePlant(plant.id, updatedPlant);
+                  Get.back();
+                },
+                child: const Text('수정'),
+              ),
+            ],
+          ),
         ),
       ),
     );

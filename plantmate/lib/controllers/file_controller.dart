@@ -16,7 +16,7 @@ class FileController extends GetxController {
         return null;
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
       return null;
     }
   }

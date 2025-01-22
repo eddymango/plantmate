@@ -58,7 +58,7 @@ class GroupController extends GetxController {
         // Get.snackbar('Error', '그룹에 속한 식물이 없습니다.');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 
@@ -67,7 +67,7 @@ class GroupController extends GetxController {
     try {
       final userId = authController.currentUser?.id;
       if (userId == null) {
-        Get.snackbar('Error', '로그인 정보가 없습니다.');
+        // Get.snackbar('Error', '로그인 정보가 없습니다.');
         return;
       }
 
@@ -88,7 +88,7 @@ class GroupController extends GetxController {
     try {
       final userId = authController.currentUser?.id;
       if (userId == null) {
-        Get.snackbar('Error', '로그인 정보가 없습니다.');
+        // Get.snackbar('Error', '로그인 정보가 없습니다.');
         return;
       }
 
@@ -98,10 +98,10 @@ class GroupController extends GetxController {
             duration: Duration(seconds: 1));
         fetchGroups(); // 데이터 새로고침
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '그룹 탈퇴 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '그룹 탈퇴 실패');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 
@@ -110,7 +110,7 @@ class GroupController extends GetxController {
     try {
       final userId = authController.currentUser?.id;
       if (userId == null) {
-        Get.snackbar('Error', '로그인 정보가 없습니다.');
+        // Get.snackbar('Error', '로그인 정보가 없습니다.');
         return;
       }
 
@@ -123,7 +123,7 @@ class GroupController extends GetxController {
         // Get.snackbar('Error', response.body['message'] ?? '그룹 생성 실패');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 
@@ -131,7 +131,7 @@ class GroupController extends GetxController {
     try {
       final userId = authController.currentUser?.id;
       if (userId == null) {
-        Get.snackbar('Error', '로그인 정보가 없습니다.');
+        // Get.snackbar('Error', '로그인 정보가 없습니다.');
         return;
       }
 
@@ -140,10 +140,10 @@ class GroupController extends GetxController {
         Get.snackbar('Success', '그룹이 삭제되었습니다.', duration: Duration(seconds: 1));
         fetchGroups(); // 데이터 새로고침
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '그룹 삭제 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '그룹 삭제 실패');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 }

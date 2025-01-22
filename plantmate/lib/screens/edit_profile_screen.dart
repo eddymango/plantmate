@@ -83,17 +83,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                     if (success) {
                       Get.back();
-                      Get.snackbar(
-                        '성공',
-                        '회원정보가 수정되었습니다.',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
+                      Get.snackbar('성공', '회원정보가 수정되었습니다.',
+                          snackPosition: SnackPosition.BOTTOM,
+                          duration: Duration(seconds: 1));
                     } else {
-                      Get.snackbar(
-                        '실패',
-                        '회원정보 수정에 실패했습니다.',
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
+                      // Get.snackbar(
+                      //   '실패',
+                      //   '회원정보 수정에 실패했습니다.',
+                      //   snackPosition: SnackPosition.BOTTOM,
+                      // );
                     }
                   },
                   child: const Text('저장'),

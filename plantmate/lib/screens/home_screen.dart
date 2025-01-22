@@ -45,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, //new line
+
       appBar: AppBar(
         title: const Text('Plantmate'),
         actions: [
@@ -87,61 +89,66 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           } else {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "식물 목록",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                SizedBox(
-                  height: 360,
-                  child: plantController.plants.isEmpty
-                      ? Center(
-                          child: Text(
-                            '이 그룹에 속한 식물이 없습니다.',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                        )
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: plantController.plants.length,
-                          itemBuilder: (context, index) {
-                            final plant = plantController.plants[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: PlantCard(
-                                key: ValueKey(plant.id), // 고유한 키 설정  오른른
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "식물 목록",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    height: 360,
+                    child: plantController.plants.isEmpty
+                        ? Center(
+                            child: Text(
+                              '이 그룹에 속한 식물이 없습니다.',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: plantController.plants.length,
+                            itemBuilder: (context, index) {
+                              final plant = plantController.plants[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: PlantCard(
+                                  key: ValueKey(plant.id), // 고유한 키 설정  오른른
 
-                                plant: plant,
-                              ),
-                            );
-                          },
+                                  plant: plant,
+                                ),
+                              );
+                            },
+                          ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: StatCard(
+                          label: '오늘 물 줄 식물',
+                          value: plantController
+                              .getTodayWateringCount()
+                              .toString(),
                         ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: StatCard(
-                        label: '오늘 물 줄 식물',
-                        value:
-                            plantController.getTodayWateringCount().toString(),
                       ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: StatCard(
-                        label: '총 식물 수',
-                        value: plantController.getTotalPlantCount().toString(),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: StatCard(
+                          label: '총 식물 수',
+                          value:
+                              plantController.getTotalPlantCount().toString(),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             );
           }
         }),

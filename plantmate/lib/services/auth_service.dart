@@ -19,13 +19,13 @@ class AuthService extends GetConnect {
   // 로그인 API 호출  api url 수정필요
   // 로그인 요청
   Future<Response> login(String email, String password) async {
-    print('로그인 요청: $email, $password');
+    // print('로그인 요청: $email, $password');
 
     final response =
         await post('/user/login', {'email': email, 'password': password});
-    print(response.body);
-    print('로그인 응답 상태 코드: ${response.statusCode}');
-    print('로그인 응답 바디: ${response.body}');
+    // print(response.body);
+    // print('로그인 응답 상태 코드: ${response.statusCode}');
+    // print('로그인 응답 바디: ${response.body}');
 
     return response;
   }
@@ -56,6 +56,6 @@ class AuthService extends GetConnect {
 // 회원 정보 가져오기
 
 void logout() {
-  Get.snackbar('Success', '로그아웃 되었습니다.');
+  Get.snackbar('Success', '로그아웃 되었습니다.', duration: Duration(seconds: 1));
   Get.offAllNamed('/login');
 }

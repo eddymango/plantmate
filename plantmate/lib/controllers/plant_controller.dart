@@ -114,10 +114,10 @@ class PlantController extends GetxController {
         // fetchPlantsForGroup(updatedPlant.groupId);
         // plants.refresh(); // 그룹의 식물 목록 다시 가져오기
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '식물 수정 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '식물 수정 실패');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 
@@ -132,7 +132,7 @@ class PlantController extends GetxController {
         // Get.snackbar('Error', response.body['message'] ?? '식물 삭제 실패');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 
@@ -147,7 +147,7 @@ class PlantController extends GetxController {
         return null;
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
       return null;
     }
   }
@@ -158,7 +158,7 @@ class PlantController extends GetxController {
       final userId = authController.currentUser!.id;
       final response = await plantService.waterPlant(plantId, userId);
       if (response.statusCode == 200) {
-        print('Response body: ${response.body}');
+        // print('Response body: ${response.body}');
         // final responseBody = jsonDecode(response.body);
         if (response.body['result'] == 'ok') {
           Get.snackbar('Success', '식물에 물을 주었습니다.',
@@ -171,7 +171,7 @@ class PlantController extends GetxController {
         // Get.snackbar('Error', '물주기 실패: ${response.statusCode}');
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
     }
   }
 
@@ -186,7 +186,7 @@ class PlantController extends GetxController {
         return null;
       }
     } catch (e) {
-      Get.snackbar('Error', '서버 오류: $e');
+      // Get.snackbar('Error', '서버 오류: $e');
       return null;
     }
   }
