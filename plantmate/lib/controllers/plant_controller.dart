@@ -32,7 +32,7 @@ class PlantController extends GetxController {
   }
 
   // 그룹의 식물 목록 가져오기
-  void fetchPlantsForGroup(int groupId) async {
+  Future fetchPlantsForGroup(int groupId) async {
     try {
       final response = await plantService.getPlantsForGroup(groupId);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
@@ -81,7 +81,8 @@ class PlantController extends GetxController {
       final response = await plantService.addPlant(plantData);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
         Get.snackbar('Success', '식물이 추가되었습니다.', duration: Duration(seconds: 1));
-        fetchPlantsForGroup(plant.groupId); // 그룹의 식물 목록 다시 가져오기
+        await fetchPlantsForGroup(plant.groupId); // 그룹의 식물 목록 다시 가져오기
+        plants.refresh();
       } else {
         // Get.snackbar('Error', response.body['message'] ?? '식물 추가 실패');
       }

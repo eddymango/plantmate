@@ -61,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   final selectedGroup = groupController.myGroups.firstWhere(
                     (group) => group['name'] == value,
                   );
+                  plantController.plants.clear();
+
                   plantController.fetchPlantsForGroup(selectedGroup['id']);
                 });
               },
@@ -109,8 +111,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: plantController.plants.length,
                           itemBuilder: (context, index) {
                             final plant = plantController.plants[index];
-                            return PlantCard(
-                              plant: plant,
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: PlantCard(
+                                key: ValueKey(plant.id), // 고유한 키 설정
+
+                                plant: plant,
+                              ),
                             );
                           },
                         ),
@@ -158,73 +165,78 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('식물 추가'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: const InputDecoration(labelText: '식물 이름'),
-              ),
-              TextField(
-                controller: descriptionController,
-                decoration: const InputDecoration(labelText: '식물 설명'),
-              ),
-              TextField(
-                controller: wateringIntervalController,
-                decoration: const InputDecoration(labelText: '물주기 주기 (일)'),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _pickImage,
-                child: const Text('이미지 선택'),
-              ),
-              if (_selectedImage != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Image.file(
-                    _selectedImage!,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            title: const Text('식물 추가'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: '식물 이름'),
                 ),
+                TextField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(labelText: '식물 설명'),
+                ),
+                TextField(
+                  controller: wateringIntervalController,
+                  decoration: const InputDecoration(labelText: '물주기 주기 (일)'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: _pickImage,
+                  child: const Text('이미지 선택'),
+                ),
+                if (_selectedImage != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    // child: Image.file(
+                    //   _selectedImage!,
+                    //   height: 100,
+                    //   fit: BoxFit.cover,
+                    // ),
+                  ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text('취소'),
+              ),
+              TextButton(
+                onPressed: () {
+                  final selectedGroup = groupController.myGroups.firstWhere(
+                    (group) =>
+                        group['name'] == groupController.selectedGroup.value,
+                  );
+                  final now = DateTime.now();
+                  final formattedLastWateredAt =
+                      DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+                  final plant = Plant(
+                    id: 0, // 임시 ID, 실제로는 서버에서 생성됨
+                    groupId: selectedGroup['id'],
+                    name: nameController.text,
+                    description: descriptionController.text,
+                    wateringInterval:
+                        int.parse(wateringIntervalController.text),
+                    lastWateredAt: formattedLastWateredAt, // 현재 시간으로 설정
+                    createdAt: DateFormat('yyyy-MM-dd HH:mm:ss').format(now),
+                    photoUrl: _selectedImage?.path ?? '',
+                  );
+                  plantController.addPlant(plant, _selectedImage).then((_) {
+                    Get.back();
+                  });
+                  Get.back();
+                },
+                child: const Text('추가'),
+              ),
             ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text('취소'),
-            ),
-            TextButton(
-              onPressed: () {
-                final selectedGroup = groupController.myGroups.firstWhere(
-                  (group) =>
-                      group['name'] == groupController.selectedGroup.value,
-                );
-                final now = DateTime.now();
-                final formattedLastWateredAt =
-                    DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-                final plant = Plant(
-                  id: 0, // 임시 ID, 실제로는 서버에서 생성됨
-                  groupId: selectedGroup['id'],
-                  name: nameController.text,
-                  description: descriptionController.text,
-                  wateringInterval: int.parse(wateringIntervalController.text),
-                  lastWateredAt: formattedLastWateredAt, // 현재 시간으로 설정
-                  createdAt: DateFormat('yyyy-MM-dd HH:mm:ss').format(now),
-                  photoUrl: _selectedImage?.path ?? '',
-                );
-                plantController.addPlant(plant, _selectedImage);
-                Get.back();
-              },
-              child: const Text('추가'),
-            ),
-          ],
-        );
+          );
+        });
       },
     );
   }
