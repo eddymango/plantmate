@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../models/plant_model.dart';
 import '../screens/plant_detail_screen.dart';
+import '../controllers/plant_controller.dart';
 
 class PlantCard extends StatefulWidget {
   final Plant plant;
@@ -17,6 +18,30 @@ class PlantCard extends StatefulWidget {
 }
 
 class _PlantCardState extends State<PlantCard> {
+  final PlantController plantController = Get.find<PlantController>();
+  late String dDayText;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateDDay();
+  }
+
+  void _calculateDDay() {
+    DateTime nextWateringDate = DateTime.now();
+    if (widget.plant.lastWateredAt.isNotEmpty) {
+      DateTime lastWateredDateParsed =
+          DateTime.parse(widget.plant.lastWateredAt);
+      nextWateringDate = lastWateredDateParsed
+          .add(Duration(days: widget.plant.wateringInterval + 1));
+    }
+
+    final dDay = nextWateringDate.difference(DateTime.now()).inDays;
+    setState(() {
+      dDayText = dDay >= 0 ? "D-${dDay}" : "D+${-dDay}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // 마지막 물 준 날짜를 년, 월, 일 형식으로 변환
@@ -27,18 +52,6 @@ class _PlantCardState extends State<PlantCard> {
       formattedLastWateredDate =
           DateFormat('yyyy-MM-dd').format(lastWateredDateParsed);
     }
-
-    // 다음 물주기 날짜 계산
-    DateTime nextWateringDate = DateTime.now();
-    if (widget.plant.lastWateredAt.isNotEmpty) {
-      DateTime lastWateredDateParsed =
-          DateTime.parse(widget.plant.lastWateredAt);
-      nextWateringDate = lastWateredDateParsed
-          .add(Duration(days: widget.plant.wateringInterval));
-    }
-
-    // D-Day 계산
-    final dDay = nextWateringDate.difference(DateTime.now()).inDays;
 
     return GestureDetector(
       onTap: () {
@@ -103,7 +116,7 @@ class _PlantCardState extends State<PlantCard> {
                     style: TextStyle(fontSize: 14),
                   ),
                   Text(
-                    "D-$dDay",
+                    dDayText,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -119,12 +132,11 @@ class _PlantCardState extends State<PlantCard> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // 물주기 기능
-                  setState(() {
-                    widget.plant.lastWateredAt =
-                        DateTime.now().toIso8601String();
-                  });
+                  await plantController.waterPlant(
+                      widget.plant.id, widget.plant.groupId);
+                  _calculateDDay();
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),

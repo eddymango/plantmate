@@ -86,13 +86,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 16),
               Row(
-                children: const [
+                children: [
                   Expanded(
-                    child: StatCard(label: '오늘 물 줄 식물', value: '2'),
+                    child: StatCard(
+                      label: '오늘 물 줄 식물',
+                      value: plantController.getTodayWateringCount().toString(),
+                    ),
                   ),
                   SizedBox(width: 16),
                   Expanded(
-                    child: StatCard(label: '총 식물 수', value: '5'),
+                    child: StatCard(
+                      label: '총 식물 수',
+                      value: plantController.getTotalPlantCount().toString(),
+                    ),
                   ),
                 ],
               ),
