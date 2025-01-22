@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 
-import '../models/plant_model.dart';
-
 class PlantService extends GetConnect {
   final String _baseUrl = 'http://10.0.2.2:3000'; // 실제 서버 URL
 

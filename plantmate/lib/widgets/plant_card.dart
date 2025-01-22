@@ -28,17 +28,28 @@ class _PlantCardState extends State<PlantCard> {
   }
 
   void _calculateDDay() {
-    DateTime nextWateringDate = DateTime.now();
+    // 오늘 날짜에서 시간 정보를 제거
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+
+    DateTime nextWateringDate = today; // 초기값 설정
     if (widget.plant.lastWateredAt.isNotEmpty) {
       DateTime lastWateredDateParsed =
           DateTime.parse(widget.plant.lastWateredAt);
-      nextWateringDate = lastWateredDateParsed
-          .add(Duration(days: widget.plant.wateringInterval + 1));
+      nextWateringDate = DateTime(
+        lastWateredDateParsed.year,
+        lastWateredDateParsed.month,
+        lastWateredDateParsed.day,
+      ).add(Duration(days: widget.plant.wateringInterval));
     }
 
-    final dDay = nextWateringDate.difference(DateTime.now()).inDays;
+    final dDay = nextWateringDate.difference(today).inDays;
     setState(() {
-      dDayText = dDay >= 0 ? "D-${dDay}" : "D+${-dDay}";
+      dDayText = dDay > 0
+          ? "D-$dDay"
+          : dDay == 0
+              ? "D-Day"
+              : "D+${-dDay}";
     });
   }
 

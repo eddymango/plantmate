@@ -109,7 +109,8 @@ class AuthController extends GetxController {
         // 로컬 사용자 정보 삭제
         storage.remove('user');
         user.value = null;
-        Get.snackbar('Success', '회원 탈퇴가 완료되었습니다.');
+        Get.snackbar('Success', '회원 탈퇴가 완료되었습니다.',
+            duration: Duration(seconds: 1));
         Get.offAllNamed('/login'); // 로그인 화면으로 이동
       } else {
         Get.snackbar('Error', response.body['message'] ?? '회원 탈퇴 실패');

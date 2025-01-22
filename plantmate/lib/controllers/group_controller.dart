@@ -55,7 +55,7 @@ class GroupController extends GetxController {
 
         filteredRecommendedGroups.value = recommendedGroups; // 초기화
       } else {
-        Get.snackbar('Error', '그룹에 속한 식물이 없습니다.');
+        // Get.snackbar('Error', '그룹에 속한 식물이 없습니다.');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -73,10 +73,10 @@ class GroupController extends GetxController {
 
       final response = await groupService.joinGroup(groupId, password, userId);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '그룹에 가입되었습니다.');
+        Get.snackbar('Success', '그룹에 가입되었습니다.', duration: Duration(seconds: 1));
         fetchGroups(); // 데이터 새로고침
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '그룹 가입 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '그룹 가입 실패');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -94,7 +94,8 @@ class GroupController extends GetxController {
 
       final response = await groupService.leaveGroup(groupId, userId);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '그룹에서 탈퇴하였습니다.');
+        Get.snackbar('Success', '그룹에서 탈퇴하였습니다.',
+            duration: Duration(seconds: 1));
         fetchGroups(); // 데이터 새로고침
       } else {
         Get.snackbar('Error', response.body['message'] ?? '그룹 탈퇴 실패');
@@ -116,10 +117,10 @@ class GroupController extends GetxController {
       final response =
           await groupService.createGroup(name, description, password, userId);
       if (response.statusCode == 201 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '그룹이 생성되었습니다.');
+        Get.snackbar('Success', '그룹이 생성되었습니다.', duration: Duration(seconds: 1));
         fetchGroups(); // 데이터 새로고침
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '그룹 생성 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '그룹 생성 실패');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -136,7 +137,7 @@ class GroupController extends GetxController {
 
       final response = await groupService.deleteGroup(groupId, userId);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '그룹이 삭제되었습니다.');
+        Get.snackbar('Success', '그룹이 삭제되었습니다.', duration: Duration(seconds: 1));
         fetchGroups(); // 데이터 새로고침
       } else {
         Get.snackbar('Error', response.body['message'] ?? '그룹 삭제 실패');

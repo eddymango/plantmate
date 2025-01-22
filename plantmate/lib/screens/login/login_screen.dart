@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/auth_controller.dart';
-import '../../plantmate.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {

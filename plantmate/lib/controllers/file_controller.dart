@@ -12,7 +12,7 @@ class FileController extends GetxController {
         // 서버에서 반환된 파일 URL을 반환
         return response;
       } else {
-        Get.snackbar('Error', '파일 업로드 실패');
+        // Get.snackbar('Error', '파일 업로드 실패');
         return null;
       }
     } catch (e) {

@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:plantmate/controllers/auth_controller.dart';
-import 'package:plantmate/controllers/file_controller.dart';
 import 'package:plantmate/models/plant_model.dart';
 import '../services/file_service.dart';
 import '../services/plant_service.dart';
-import 'dart:convert';
 
 class PlantController extends GetxController {
   var plants = <Plant>[].obs; // 선택된 그룹의 식물 목록
@@ -44,7 +42,7 @@ class PlantController extends GetxController {
         sortPlantsByWateringDate();
       } else {
         plants.value = [];
-        Get.snackbar('Error', '식물 데이터를 가져오는데 실패했습니다.');
+        // Get.snackbar('Error', '식물 데이터를 가져오는데 실패했습니다.');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -82,10 +80,10 @@ class PlantController extends GetxController {
 
       final response = await plantService.addPlant(plantData);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '식물이 추가되었습니다.');
+        Get.snackbar('Success', '식물이 추가되었습니다.', duration: Duration(seconds: 1));
         fetchPlantsForGroup(plant.groupId); // 그룹의 식물 목록 다시 가져오기
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '식물 추가 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '식물 추가 실패');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -104,7 +102,7 @@ class PlantController extends GetxController {
 
       final response = await plantService.updatePlant(plantId, plantData);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '식물이 수정되었습니다.');
+        Get.snackbar('Success', '식물이 수정되었습니다.', duration: Duration(seconds: 1));
         fetchPlantsForGroup(updatedPlant.groupId); // 그룹의 식물 목록 다시 가져오기
       } else {
         Get.snackbar('Error', response.body['message'] ?? '식물 수정 실패');
@@ -119,10 +117,10 @@ class PlantController extends GetxController {
     try {
       final response = await plantService.deletePlant(plantId);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
-        Get.snackbar('Success', '식물이 삭제되었습니다.');
+        Get.snackbar('Success', '식물이 삭제되었습니다.', duration: Duration(seconds: 1));
         fetchPlantsForGroup(groupId);
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '식물 삭제 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '식물 삭제 실패');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -136,7 +134,7 @@ class PlantController extends GetxController {
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
         return Plant.fromJson(response.body['data']);
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '식물 조회 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '식물 조회 실패');
         return null;
       }
     } catch (e) {
@@ -154,13 +152,14 @@ class PlantController extends GetxController {
         print('Response body: ${response.body}');
         // final responseBody = jsonDecode(response.body);
         if (response.body['result'] == 'ok') {
-          Get.snackbar('Success', '식물에 물을 주었습니다.');
+          Get.snackbar('Success', '식물에 물을 주었습니다.',
+              duration: Duration(seconds: 1));
           fetchPlantsForGroup(groupId); // 물주기 후 그룹의 식물 목록 다시 가져오기
         } else {
-          Get.snackbar('Error', response.body['message'] ?? '물주기 실패');
+          // Get.snackbar('Error', response.body['message'] ?? '물주기 실패');
         }
       } else {
-        Get.snackbar('Error', '물주기 실패: ${response.statusCode}');
+        // Get.snackbar('Error', '물주기 실패: ${response.statusCode}');
       }
     } catch (e) {
       Get.snackbar('Error', '서버 오류: $e');
@@ -174,7 +173,7 @@ class PlantController extends GetxController {
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
         return response.body['data'];
       } else {
-        Get.snackbar('Error', response.body['message'] ?? '물주기 주기 계산 실패');
+        // Get.snackbar('Error', response.body['message'] ?? '물주기 주기 계산 실패');
         return null;
       }
     } catch (e) {

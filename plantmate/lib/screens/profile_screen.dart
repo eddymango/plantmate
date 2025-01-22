@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:plantmate/controllers/auth_controller.dart';
 
-import '../models/user_model.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
