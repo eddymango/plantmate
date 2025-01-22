@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/group_controller.dart';
@@ -19,12 +22,24 @@ class _HomeScreenState extends State<HomeScreen> {
   final GroupController groupController = Get.put(GroupController());
 
   final PlantController plantController = Get.put(PlantController());
+  File? _selectedImage;
 
   @override
   void initState() {
     super.initState();
     // 첫 번째 그룹의 식물 목록을 자동으로 받아오기 위해 fetchGroups 호출
     groupController.fetchGroups();
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _selectedImage = File(pickedFile.path);
+      });
+    }
   }
 
   @override
@@ -161,6 +176,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: const InputDecoration(labelText: '물주기 주기 (일)'),
                 keyboardType: TextInputType.number,
               ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: const Text('이미지 선택'),
+              ),
+              if (_selectedImage != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Image.file(
+                    _selectedImage!,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
             ],
           ),
           actions: [
@@ -176,18 +205,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   (group) =>
                       group['name'] == groupController.selectedGroup.value,
                 );
+                final now = DateTime.now();
+                final formattedLastWateredAt =
+                    DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
                 final plant = Plant(
                   id: 0, // 임시 ID, 실제로는 서버에서 생성됨
                   groupId: selectedGroup['id'],
                   name: nameController.text,
                   description: descriptionController.text,
                   wateringInterval: int.parse(wateringIntervalController.text),
-                  lastWateredAt: DateFormat('yyyy-MM-dd HH:mm:ss')
-                      .format(DateTime.now()), // 현재 시간으로 설정
-                  createdAt: DateTime.now().toIso8601String(),
-                  photoUrl: '',
+                  lastWateredAt: formattedLastWateredAt, // 현재 시간으로 설정
+                  createdAt: DateFormat('yyyy-MM-dd HH:mm:ss').format(now),
+                  photoUrl: _selectedImage?.path ?? '',
                 );
-                plantController.addPlant(plant);
+                plantController.addPlant(plant, _selectedImage);
                 Get.back();
               },
               child: const Text('추가'),

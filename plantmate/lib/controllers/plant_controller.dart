@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:plantmate/controllers/auth_controller.dart';
+import 'package:plantmate/controllers/file_controller.dart';
 import 'package:plantmate/models/plant_model.dart';
+import '../services/file_service.dart';
 import '../services/plant_service.dart';
 import 'dart:convert';
 
@@ -9,6 +13,7 @@ class PlantController extends GetxController {
 
   final PlantService plantService = Get.put(PlantService());
   final AuthController authController = Get.find<AuthController>();
+  final FileService fileService = Get.put(FileService());
 
   // 오늘 물 줄 식물의 수 계산 (D-0부터 D+1까지 포함)
   int getTodayWateringCount() {
@@ -58,9 +63,24 @@ class PlantController extends GetxController {
   }
 
   // 식물 추가
-  void addPlant(Plant plant) async {
+  Future<void> addPlant(Plant plant, File? imageFile) async {
     try {
-      final response = await plantService.addPlant(plant);
+      String? photoUrl;
+      if (imageFile != null) {
+        photoUrl = await fileService.uploadFile(imageFile);
+      }
+
+      final plantData = {
+        'name': plant.name,
+        'description': plant.description,
+        'watering_interval': plant.wateringInterval,
+        'group_id': plant.groupId,
+        'last_watered_at': plant.lastWateredAt,
+        'created_at': plant.createdAt,
+        'photo_url': photoUrl ?? '',
+      };
+
+      final response = await plantService.addPlant(plantData);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
         Get.snackbar('Success', '식물이 추가되었습니다.');
         fetchPlantsForGroup(plant.groupId); // 그룹의 식물 목록 다시 가져오기
@@ -73,12 +93,19 @@ class PlantController extends GetxController {
   }
 
   // 식물 수정
-  void updatePlant(int plantId, Plant plant) async {
+  Future<void> updatePlant(int plantId, Plant updatedPlant) async {
     try {
-      final response = await plantService.updatePlant(plantId, plant);
+      final plantData = {
+        'name': updatedPlant.name,
+        'description': updatedPlant.description,
+        'watering_interval': updatedPlant.wateringInterval,
+        'photo_url': updatedPlant.photoUrl,
+      };
+
+      final response = await plantService.updatePlant(plantId, plantData);
       if (response.statusCode == 200 && response.body['result'] == 'ok') {
         Get.snackbar('Success', '식물이 수정되었습니다.');
-        fetchPlantsForGroup(plant.groupId);
+        fetchPlantsForGroup(updatedPlant.groupId); // 그룹의 식물 목록 다시 가져오기
       } else {
         Get.snackbar('Error', response.body['message'] ?? '식물 수정 실패');
       }

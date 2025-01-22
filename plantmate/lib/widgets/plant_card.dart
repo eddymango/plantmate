@@ -77,12 +77,27 @@ class _PlantCardState extends State<PlantCard> {
             // 이미지 영역
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/images/image1.jpg',
-                height: 120,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: widget.plant.photoUrl.isNotEmpty
+                  ? Image.network(
+                      'http://10.0.2.2:3000/${widget.plant.photoUrl}',
+                      height: 120,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/image1.jpg',
+                          height: 120,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      'assets/images/image1.jpg',
+                      height: 120,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             ),
             const SizedBox(height: 12),
 

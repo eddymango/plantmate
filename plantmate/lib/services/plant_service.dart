@@ -13,13 +13,14 @@ class PlantService extends GetConnect {
   }
 
   // 식물 추가
-  Future<Response> addPlant(Plant plant) async {
-    return await post('/plants', plant.toJson());
+  Future<Response> addPlant(Map<String, dynamic> plantData) async {
+    return await post('/plants', plantData);
   }
 
   // 식물 수정
-  Future<Response> updatePlant(int plantId, Plant plant) async {
-    return await put('/plants/$plantId', plant.toJson());
+  Future<Response> updatePlant(
+      int plantId, Map<String, dynamic> plantData) async {
+    return await put('/plants/$plantId', plantData);
   }
 
   // 식물 삭제
